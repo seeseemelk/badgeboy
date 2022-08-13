@@ -557,11 +557,11 @@ void ppu(int cycles) {
 
     set_lcd_stat();
 
-    /*if (!lcdc_is_enabled())
+    if (!lcdc_is_enabled())
     {
-        puts("LDC is disabled");
+        //puts("LCD is disabled");
         return;
-    }*/
+    }
 
     scanline_cycles_left -= cycles;
 

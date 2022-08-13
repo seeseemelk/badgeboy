@@ -21,8 +21,8 @@
 //ssd = SSD(spi, height=240, width=240, cs=pcs, dc=pdc, rst=prst)
 
 
-//const int FRAME_MAX_CYCLES = 69905;
-const int FRAME_MAX_CYCLES = 1;
+const int FRAME_MAX_CYCLES = 69905;
+//const int FRAME_MAX_CYCLES = 1;
 unsigned long emulation_time = 0;
 
 void setup() {
@@ -82,7 +82,7 @@ void setup() {
 }
 
 void loop() {
-  //puts("In loop");
+  puts("In loop");
   unsigned int cycles_this_frame = 0;
 
   while (cycles_this_frame < FRAME_MAX_CYCLES) {

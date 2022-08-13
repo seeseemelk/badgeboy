@@ -30,9 +30,9 @@ union address_space {
             struct {
                 unsigned char rombank_fixed[0x4000]; // 16k for ROM Bank 0
                 unsigned char rombank_switchable[0x4000]; // 16k for Switchable ROM Bank (1..N)
-            };
+            } __attribute((packed));
             unsigned char rombanks[0x8000];
-        };
+        } __attribute((packed));
         unsigned char vram[0x2000]; // 8K for VRAM
         unsigned char external_ram[0x2000]; // 8K for External Switchable RAM in Cartridge
         unsigned char ram[0x2000]; // 8K for Internal Work RAM
@@ -89,14 +89,14 @@ union address_space {
                 unsigned char padding__[0x4]; // $FF4C - $FF4F
                 unsigned char disabled_bootrom[1]; // $FF50
                 unsigned char padding___[0x2F];
-            };
+            } __attribute((packed));
             unsigned char ioports[0x80]; // IO Ports ($FF00)
-        };
+        } __attribute((packed));
         unsigned char hram[0x7F]; // High RAM
         unsigned char interrupt_enable_register[1]; // Interrupt enable register
-    };
+    } __attribute((packed));
     unsigned char memory[0x10000]; // 64K address space
-};
+} __attribute((packed));
 
 extern unsigned char* memory;
 extern unsigned char* ioports;

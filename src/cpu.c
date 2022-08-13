@@ -1777,10 +1777,12 @@ static int execute() {
         // Use mmu read instead
         /* opcode = memory[registers.pc++]; */
         mmu_read8bit(&opcode, registers.pc++);
+        printf("Opcode [0x%04X]: 0xCB 0x%02X\n", registers.pc - 2, opcode);
         instruction = instructions_cb[opcode];
         time = instructions_cb_ticks[opcode];
     }
     else {
+        printf("Opcode [0x%04X]: 0x%02X\n", registers.pc - 1, opcode);
         instruction = instructions[opcode];
         time = instructions_ticks[opcode];
     }
@@ -1804,7 +1806,10 @@ static int execute() {
 int cpu() {
 
     if (stopped)    /* when the CPU is stopped, just keep updating the window (return random number of cycles) */
+    {
+        puts("CPU is stopped");
         return 1;
+    }
     int cycles = 0;
 
     if (!halted)

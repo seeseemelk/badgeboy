@@ -109,6 +109,8 @@ void insert_cartridge_now() {
 void init_memory() {
     ram_banks = malloc(0x8000);
     rom = malloc(0x200000);
+    memset(ram_banks, 0, 0x8000);
+    memset(rom, 0, 0x200000);
 }
 
 void load_roms() {
