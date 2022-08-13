@@ -269,8 +269,27 @@ void render_frame() {
                 pixels[i] = 1;
             }
         }*/
-        //s_display.fillScreen(ST77XX_BLACK);
-        s_display.drawBitmap(0, 0, scanlinesbuffer, SCREEN_WIDTH, SCREEN_HEIGHT, ST77XX_BLUE);
+        // static unsigned short pixels[SCREEN_WIDTH];
+        // for (int i = 0; i < SCREEN_WIDTH; i++)
+        //     pixels[i] = ST77XX_BLUE;
+        unsigned short line[SCREEN_WIDTH];
+        s_display.startWrite();
+        s_display.setAddrWindow(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        for (int y = 0; y < SCREEN_HEIGHT; y++) {
+            unsigned char* scanline = scanlinesbuffer + y * SCREEN_WIDTH;
+            for (int x = 0; x < SCREEN_WIDTH; x++) {
+                if (scanline[x] == 0) {
+                    line[x] = ST77XX_BLACK;
+                } else {
+                    line[x] = ST77XX_WHITE;
+                }
+            }
+            s_display.writePixels(line, SCREEN_WIDTH, false);
+        }
+        s_display.endWrite();
+        // s_display.fillScreen(ST77XX_RED);
+        //s_display.
+        // s_display.drawBitmap(0, 0, scanlinesbuffer, SCREEN_WIDTH, SCREEN_HEIGHT, ST77XX_BLUE);
         //memset(pixels, 255, SCREEN_WIDTH * SCREEN_HEIGHT * sizeof(int));
         //SDL_UpdateTexture(texture, NULL, pixels, SCREEN_WIDTH * sizeof(int));
         //SDL_RenderClear(renderer);

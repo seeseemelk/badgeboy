@@ -7,6 +7,7 @@
 #include "emulator.h"
 #include "ppu.h"
 #include "cpu.h"
+#include "keys.h"
 #include "timer.h"
 #include "memory.h"
 #include "cartridge.h"
@@ -26,8 +27,19 @@ const int FRAME_MAX_CYCLES = 69905;
 unsigned long emulation_time = 0;
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
 
+  // Initialise keys
+  pinMode(KEY_A, INPUT_PULLUP);
+  pinMode(KEY_B, INPUT_PULLUP);
+  pinMode(KEY_UP, INPUT_PULLUP);
+  pinMode(KEY_LEFT, INPUT_PULLUP);
+  pinMode(KEY_DOWN, INPUT_PULLUP);
+  pinMode(KEY_RIGHT, INPUT_PULLUP);
+  pinMode(KEY_START, INPUT_PULLUP);
+  pinMode(KEY_SELECT, INPUT_PULLUP);
+
+  // Initialise chip select pins
   pinMode(5, OUTPUT);
   pinMode(4, OUTPUT);
   digitalWrite(5, HIGH);
@@ -54,7 +66,7 @@ void setup() {
   init_memory();
   puts("Loading cartridge");
 
-  File file = SD.open("/cartridge.gb", "rb");
+  File file = SD.open("/tetris.gb", "rb");
   if (!file) {
     puts("Could not find file");
   } else {
@@ -81,6 +93,39 @@ void setup() {
   puts("Ready");
 }
 
+static void process_input() {
+  unsigned char joypad_key = 0;
+  if (digitalRead(KEY_RIGHT) == 0) {
+    joypad_key |= 0x01;
+  }
+  if (digitalRead(KEY_LEFT) == 0) {
+    joypad_key |= 0x02;
+  }
+  if (digitalRead(KEY_UP) == 0) {
+    joypad_key |= 0x04;
+  }
+  if (digitalRead(KEY_DOWN) == 0) {
+    joypad_key |= 0x08;
+  }
+  // if (digitalRead(KEY_A) == 0) {
+  //   joypad_key |= 0x10;
+  // }
+  // if (digitalRead(KEY_B) == 0) {
+  //   joypad_key |= 0x20;
+  // }
+  // if (digitalRead(KEY_SELECT) == 0) {
+  //   joypad_key |= 0x40;
+  // }
+  // if (digitalRead(KEY_START) == 0) {
+  //   joypad_key |= 0x80;
+  // }
+  joypad_state = joypad_key;
+  *joyp = joypad_state;
+  if (joypad_state != 0) {
+    request_interrupt(JOYPAD_INTERRUPT);
+  }
+}
+
 void loop() {
   puts("In loop");
   unsigned int cycles_this_frame = 0;
@@ -97,7 +142,7 @@ void loop() {
 
       timer(cycles); /* Same thing as the PPU goes for timers */
 
-      //process_input();
+      process_input();
 
       cycles_this_frame += cycles;
   }

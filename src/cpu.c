@@ -47,7 +47,7 @@ static unsigned char read8bit_operand() {
     return mem_read;
 }
 
-static char read8bit_signed_operand() {
+static signed char read8bit_signed_operand() {
 
     unsigned char mem_read;
     mmu_read8bit(&mem_read, registers.pc++);
@@ -213,7 +213,7 @@ static void pop_op(unsigned char* hi_reg, unsigned char* lo_reg) {
 
 static void load16bit_sp_operand_offset() {
 
-    char operand = read8bit_signed_operand();
+    signed char operand = read8bit_signed_operand();
     unsigned short operand_plus_sp = operand + registers.sp;
     unsigned char lo = registers.sp & 0xFF;
 
@@ -590,7 +590,7 @@ static void dec16bit(unsigned short* reg) {
 static void add16bit_sp_operand() {
 
 
-    char operand = read8bit_signed_operand();
+    signed char operand = read8bit_signed_operand();
     unsigned char lo = registers.sp & 0xFF;
 
     // TODO: i should have refactored the flags code when i had the chance to do it 
@@ -1037,9 +1037,9 @@ static void jump_condition_operand(void* flag, void* jump_cond) {
 // jump_cond is 0 if condition is NOT FLAG, jump_cond is 1 if condition is FLAG
 static void jump_condition_add_operand(void* flag, void* jump_cond) {
 
-    unsigned char flag_value = (unsigned char) flag & registers.f ? 1 : 0;
+    unsigned char flag_value = !!(((unsigned char) flag) & registers.f) ? 1 : 0;
 
-    char operand = read8bit_signed_operand();
+    signed char operand = read8bit_signed_operand();
 
     if (flag_value == (unsigned char) jump_cond) {
 
@@ -1777,12 +1777,12 @@ static int execute() {
         // Use mmu read instead
         /* opcode = memory[registers.pc++]; */
         mmu_read8bit(&opcode, registers.pc++);
-        printf("Opcode [0x%04X]: 0xCB 0x%02X\n", registers.pc - 2, opcode);
+        //printf("Opcode [0x%04X]: 0xCB 0x%02X\n", registers.pc - 2, opcode);
         instruction = instructions_cb[opcode];
         time = instructions_cb_ticks[opcode];
     }
     else {
-        printf("Opcode [0x%04X]: 0x%02X\n", registers.pc - 1, opcode);
+        //printf("Opcode [0x%04X]: 0x%02X\n", registers.pc - 1, opcode);
         instruction = instructions[opcode];
         time = instructions_ticks[opcode];
     }

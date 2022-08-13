@@ -65,39 +65,39 @@ struct registers {
         struct {
             unsigned char f;
             unsigned char a;
-        };
+        } __attribute((packed));
         unsigned short af;
-    };
+    } __attribute((packed));
     union {
         struct {
             unsigned char c;
             unsigned char b;
-        };
+        } __attribute((packed));
         unsigned short bc;
-    };
+    } __attribute((packed));
     union {
         struct {
             unsigned char e;
             unsigned char d;
-        };
+        } __attribute((packed));
         unsigned short de;
-    };
+    } __attribute((packed));
     union {
         struct {
             unsigned char l;
             unsigned char h;
-        };
+        } __attribute((packed));
         unsigned short hl;
-    };
+    } __attribute((packed));
     unsigned short sp;
     union {
         struct {
             unsigned char pclo;
             unsigned char pchi;
-        };
+        } __attribute((packed));
         unsigned short pc;
-    };
-};
+    } __attribute((packed));
+} __attribute((packed));
 
 extern struct registers registers;
 
