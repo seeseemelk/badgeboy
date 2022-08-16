@@ -254,6 +254,14 @@ void init_gui() {
     graphics_enabled = 1;
 }
 
+void screen_cyan() {
+    s_display.fillScreen(ST77XX_CYAN);
+}
+
+void screen_yellow() {
+    s_display.fillScreen(ST77XX_YELLOW);
+}
+
 
 void render_frame() {
     //puts("Rendering");

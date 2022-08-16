@@ -91,68 +91,48 @@ void setup() {
   *joyp |= 0xF;
   *tdiv = 0;
   puts("Ready");
+
+  while (1)
+  {
+    if (digitalRead(KEY_UP) == 0) {
+      screen_cyan();
+    } else {
+      screen_yellow();
+    }
+  }
 }
 
 static void process_input() {
-  *joyp &= 0xF0;
+  //*joyp &= 0xF0;
+  *joyp |= 0x0F;
   if ((*joyp & 0x10) != 0) {
     if (digitalRead(KEY_RIGHT) == 0) {
-      *joyp |= 0x01;
+      *joyp &= ~0x01;
     }
     if (digitalRead(KEY_LEFT) == 0) {
-      *joyp |= 0x02;
+      *joyp &= ~0x02;
     }
     if (digitalRead(KEY_UP) == 0) {
-      *joyp |= 0x04;
+      *joyp &= ~0x04;
     }
     if (digitalRead(KEY_DOWN) == 0) {
-      *joyp |= 0x08;
+      *joyp &= ~0x08;
     }
   }
   if ((*joyp & 0x20) != 0) {
     if (digitalRead(KEY_A) == 0) {
-      *joyp |= 0x01;
+      *joyp &= ~0x01;
     }
     if (digitalRead(KEY_B) == 0) {
-      *joyp |= 0x02;
+      *joyp &= ~0x02;
     }
     if (digitalRead(KEY_SELECT) == 0) {
-      *joyp |= 0x04;
+      *joyp &= ~0x04;
     }
     if (digitalRead(KEY_START) == 0) {
-      *joyp |= 0x08;
+      *joyp &= ~0x08;
     }
   }
-  // unsigned char joypad_key = 0;
-  // if (digitalRead(KEY_RIGHT) == 0) {
-  //   joypad_key |= 0x01;
-  // }
-  // if (digitalRead(KEY_LEFT) == 0) {
-  //   joypad_key |= 0x02;
-  // }
-  // if (digitalRead(KEY_UP) == 0) {
-  //   joypad_key |= 0x04;
-  // }
-  // if (digitalRead(KEY_DOWN) == 0) {
-  //   joypad_key |= 0x08;
-  // }
-  // if (digitalRead(KEY_A) == 0) {
-  //   joypad_key |= 0x10;
-  // }
-  // if (digitalRead(KEY_B) == 0) {
-  //   joypad_key |= 0x20;
-  // }
-  // if (digitalRead(KEY_SELECT) == 0) {
-  //   joypad_key |= 0x40;
-  // }
-  // if (digitalRead(KEY_START) == 0) {
-  //   joypad_key |= 0x80;
-  // }
-  // joypad_state = joypad_key;
-  // *joyp = joypad_state;
-  // if (joypad_state != 0) {
-  //   request_interrupt(JOYPAD_INTERRUPT);
-  // }
 }
 
 void loop() {

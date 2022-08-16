@@ -33,6 +33,8 @@ extern unsigned char joypad_state;
 
 void init_gui();
 void render_frame();
+void screen_cyan();
+void screen_yellow();
 
 void ppu(int cycles);
 
